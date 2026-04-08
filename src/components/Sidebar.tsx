@@ -12,10 +12,12 @@ import {
   Lock,
   Menu,
   X,
+  Users,
 } from "lucide-react";
 
 const menuItems = [
   { name: "Partidos", icon: Swords, href: "/" },
+  { name: "Explorar Equipos", icon: Users, href: "/teams" },
   { name: "Calendario", icon: Calendar, href: "/calendar" },
   { name: "Historial", icon: History, href: "/history" },
   { name: "Metodología", icon: Info, href: "/about" },

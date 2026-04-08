@@ -154,9 +154,19 @@ export const matchesRelations = relations(matches, ({ one }) => ({
 }));
 
 export const playersRelations = relations(players, ({ one }) => ({
-  team: one(teams, { fields: [players.teamId], references: [teams.id] }),
+  team: one(teams, {
+    fields: [players.teamId],
+    references: [teams.id],
+  }),
 }));
 
 export const usersRelations = relations(users, ({ one }) => ({
   role: one(roles, { fields: [users.roleId], references: [roles.id] }),
 }));
+
+export const teamsRelations = relations(teams, ({ many }) => ({
+  players: many(players),
+  matchesA: many(matches, { relationName: "teamA" }),
+  matchesB: many(matches, { relationName: "teamB" }),
+}));
+

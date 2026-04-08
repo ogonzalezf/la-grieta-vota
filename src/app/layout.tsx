@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import Providers from "@/components/Providers";
 import Sidebar from "@/components/Sidebar";
 import AuthStatus from "@/components/AuthStatus";
+import GlobalSearch from "@/components/GlobalSearch";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,19 +49,18 @@ export default async function RootLayout({
             <div className="flex-1 flex flex-col min-w-0 h-full relative bg-[#0b1120]">
               {/* HEADER: Fondo sólido para evitar transparencias raras */}
               <header className="h-20 flex items-center justify-between px-6 lg:px-10 border-b border-slate-800/60 bg-[#0b1120] sticky top-0 z-40">
-                <div className="flex items-center gap-4">
-                  {/* Logo solo para móvil (el Sidebar se oculta) */}
+                <div className="flex items-center gap-6 flex-1">
+                  {" "}
+                  {/* Añadido flex-1 y gap */}
+                  {/* Logo para móvil */}
                   <div className="lg:hidden">
                     <h1 className="font-black text-xl tracking-tighter italic">
                       GRIETA<span className="text-lol-cyan">VOTA</span>
                     </h1>
                   </div>
-
-                  {/* Texto decorativo para desktop */}
-                  <div className="hidden lg:block">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-black">
-                      Cada voto de la comunidad cuenta.
-                    </p>
+                  {/* BUSCADOR GLOBAL: Lo insertamos aquí para que esté a la izquierda/centro */}
+                  <div className="hidden md:block w-full max-w-sm">
+                    <GlobalSearch />
                   </div>
                 </div>
 
