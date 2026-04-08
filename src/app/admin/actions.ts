@@ -46,11 +46,13 @@ export async function deleteMatch(id: number) {
 
 export async function saveMatch(formData: FormData) {
   const id = formData.get("id") ? Number(formData.get("id")) : null;
+  const rawDate = formData.get("date") as string;
+  const matchDate = new Date(rawDate);
 
   const matchData = {
     teamAId: Number(formData.get("teamA")),
     teamBId: Number(formData.get("teamB")),
-    matchDate: new Date(formData.get("date") as string),
+    matchDate: matchDate,
     tournamentName: formData.get("tournament") as string,
     status: formData.get("status") as "UPCOMING" | "LIVE" | "FINISHED",
     scoreA: Number(formData.get("scoreA") || 0),
