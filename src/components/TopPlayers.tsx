@@ -54,12 +54,12 @@ export default function TopPlayers({ players }: TopPlayersProps) {
             </div>
 
             {/* Info Jugador */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-[8px] font-black bg-slate-800 text-lol-cyan px-1.5 py-0.5 rounded uppercase">
+                <span className="text-[8px] font-black bg-slate-800 text-lol-cyan px-1.5 py-0.5 rounded uppercase shrink-0">
                   {player.playerPosition}
                 </span>
-                <p className="font-black text-white uppercase italic truncate text-sm">
+                <p className="font-black text-white uppercase italic text-sm whitespace-nowrap">
                   {player.playerName}
                 </p>
               </div>
