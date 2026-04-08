@@ -153,9 +153,7 @@ const initialMatches: MatchListItem[] = (await db
                         </button>
                       </form>
                       <form
-                        action={async () => {
-                          // Llamamos a la acción pasando los argumentos manualmente
-                          // en lugar de usar .bind()
+                        action={async () => {                       
                           "use server";
                           await approveExpert(req.id, req.userId, req.roleId);
                         }}
