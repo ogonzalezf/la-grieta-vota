@@ -52,8 +52,15 @@ async function getTeamStats(
       status: m.status as "UPCOMING" | "LIVE" | "FINISHED",
       matchDate: m.matchDate,
       tournamentName: m.tournamentName,
-      teamA: { name: m.teamA.name, logoUrl: m.teamA.logoUrl },
-      teamB: { name: m.teamB.name, logoUrl: m.teamB.logoUrl },
+      // CORRECCIÓN: Usamos encadenamiento opcional y fallbacks para evitar el error 'possibly null'
+      teamA: {
+        name: m.teamA?.name ?? "Equipo Desconocido",
+        logoUrl: m.teamA?.logoUrl ?? "/placeholder-team.png",
+      },
+      teamB: {
+        name: m.teamB?.name ?? "Equipo Desconocido",
+        logoUrl: m.teamB?.logoUrl ?? "/placeholder-team.png",
+      },
       scoreA: m.scoreA,
       scoreB: m.scoreB,
       isVotingActive: m.isVotingActive,
