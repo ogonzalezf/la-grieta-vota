@@ -18,7 +18,7 @@ interface Team {
   logoUrl: string | null;
 }
 
-interface Match {
+export interface Match {
   id: number;
   status: "UPCOMING" | "LIVE" | "FINISHED";
   matchDate: Date | string | null;
