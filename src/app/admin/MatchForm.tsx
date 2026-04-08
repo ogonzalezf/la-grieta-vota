@@ -33,19 +33,23 @@ export default function MatchForm({
 }: MatchFormProps) {
   // FUNCIÓN CRÍTICA: Formateo manual para asegurar compatibilidad total con el navegador
   const formatForInput = (dateInput: Date | string | null | undefined) => {
-    
     if (!dateInput) return "";
 
     const d = new Date(dateInput);
     if (isNaN(d.getTime())) return "";
 
-    // Extraemos componentes locales uno a uno.
-    // Esto evita que el input ignore la fecha por formatos ISO mal interpretados.
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    const hours = String(d.getHours()).padStart(2, "0");
-    const minutes = String(d.getMinutes()).padStart(2, "0");
+    // CORRECCIÓN CLAVE:
+    // Obtenemos el desfase en minutos y lo convertimos a milisegundos.
+    // Restamos el desfase para que los métodos "get..." devuelvan
+    // exactamente lo que hay en la base de datos sin importar la zona horaria.
+    const userTimezoneOffset = d.getTimezoneOffset() * 60000;
+    const dateAdjusted = new Date(d.getTime() + userTimezoneOffset);
+
+    const year = dateAdjusted.getFullYear();
+    const month = String(dateAdjusted.getMonth() + 1).padStart(2, "0");
+    const day = String(dateAdjusted.getDate()).padStart(2, "0");
+    const hours = String(dateAdjusted.getHours()).padStart(2, "0");
+    const minutes = String(dateAdjusted.getMinutes()).padStart(2, "0");
 
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
