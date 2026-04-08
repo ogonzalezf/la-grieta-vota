@@ -10,6 +10,8 @@ import {
   ClipboardCheck,
 } from "lucide-react";
 import Link from "next/link";
+// IMPORTAMOS EL NUEVO COMPONENTE
+import FormattedDate from "./FormattedDate";
 
 interface Team {
   name: string;
@@ -25,30 +27,16 @@ interface Match {
   teamB: Team;
   scoreA?: number | null;
   scoreB?: number | null;
-  isVotingActive: boolean; // Columna de control manual
+  isVotingActive: boolean;
 }
 
 interface MatchCardProps {
   match: Match;
-  hasVoted?: boolean; // Booleano: ¿El usuario actual ya votó?
+  hasVoted?: boolean;
 }
 
 export default function MatchCard({ match, hasVoted }: MatchCardProps) {
-  const dateObj = match.matchDate ? new Date(match.matchDate) : null;
-
-  const formattedDate = dateObj
-    ? dateObj.toLocaleDateString("es-ES", {
-        day: "2-digit",
-        month: "short",
-      })
-    : "TBD";
-
-  const formattedTime = dateObj
-    ? dateObj.toLocaleTimeString("es-ES", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    : "--:--";
+  // ELIMINAMOS los formateos manuales de JS aquí arriba
 
   const statusStyles = {
     LIVE: "text-red-500 animate-pulse",
@@ -63,7 +51,7 @@ export default function MatchCard({ match, hasVoted }: MatchCardProps) {
   return (
     <div className="glass-card group hover:ring-2 hover:ring-lol-cyan/30 flex flex-col h-full border border-slate-800/50 hover:border-lol-cyan/30 transition-all">
       <div className="p-6 flex-1">
-        {/* HEADER DE LA CARD: Torneo y Estado */}
+        {/* HEADER */}
         <div className="flex justify-between items-center mb-6">
           <span className="text-[10px] font-black text-slate-500 tracking-widest uppercase">
             {match.tournamentName || "League of Legends"}
@@ -80,24 +68,31 @@ export default function MatchCard({ match, hasVoted }: MatchCardProps) {
           </div>
         </div>
 
-        {/* INFO DE FECHA Y HORA */}
+        {/* INFO DE FECHA Y HORA (CORREGIDA) */}
         <div className="flex items-center justify-center gap-4 mb-8 py-2 bg-slate-900/40 rounded-lg border border-slate-800/50">
           <div className="flex items-center gap-2 text-slate-300">
             <CalendarIcon size={14} className="text-lol-cyan" />
             <span className="text-xs font-bold uppercase tracking-tight">
-              {formattedDate}
+              {/* Usamos el componente para la fecha también si quieres precisión local */}
+              {match.matchDate
+                ? new Date(match.matchDate).toLocaleDateString("es-ES", {
+                    day: "2-digit",
+                    month: "short",
+                  })
+                : "TBD"}
             </span>
           </div>
           <div className="w-px h-4 bg-slate-700"></div>
           <div className="flex items-center gap-2 text-slate-300">
             <Clock size={14} className="text-lol-cyan" />
             <span className="text-xs font-bold tracking-tight">
-              {formattedTime} HS
+              {/* CAMBIO CLAVE: Usamos FormattedDate para la hora */}
+              <FormattedDate date={match.matchDate} />
             </span>
           </div>
         </div>
 
-        {/* ENFRENTAMIENTO: Logos y Nombres */}
+        {/* ENFRENTAMIENTO */}
         <div className="flex items-center justify-between gap-2">
           {/* Team A */}
           <div
@@ -120,8 +115,8 @@ export default function MatchCard({ match, hasVoted }: MatchCardProps) {
             </span>
           </div>
 
-          {/* SCORE CENTRAL o "VS" */}
-          <div className="min-w-[80px] text-center">
+          {/* SCORE */}
+          <div className="min-w-20 text-center">
             {isFinished ? (
               <div className="flex items-center justify-center gap-2">
                 <span
@@ -166,17 +161,12 @@ export default function MatchCard({ match, hasVoted }: MatchCardProps) {
         </div>
       </div>
 
-      {/* FOOTER: CONTROL DE ACCIÓN PRINCIPAL (Votos o Resultados) */}
+      {/* FOOTER */}
       <div className="p-4 bg-slate-900/30 border-t border-slate-800/50 mt-auto">
         {match.isVotingActive ? (
-          // ESTADO 1: Votación Abierta (Permitir Votar o Editar)
           <Link href={`/matches/${match.id}`} className="block w-full">
             <button
-              className={`w-full py-3 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] transition-all flex items-center justify-center gap-2 border border-lol-cyan hover:scale-[1.02] active:scale-[0.98] ${
-                hasVoted
-                  ? "bg-slate-950 text-lol-cyan shadow-lg shadow-cyan-950/50 hover:bg-slate-900"
-                  : "bg-lol-cyan text-black shadow-lg shadow-cyan-900/40 hover:bg-white"
-              }`}
+              className={`w-full py-3 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] transition-all flex items-center justify-center gap-2 border border-lol-cyan hover:scale-[1.02] active:scale-[0.98] ${hasVoted ? "bg-slate-950 text-lol-cyan shadow-lg shadow-cyan-950/50 hover:bg-slate-900" : "bg-lol-cyan text-black shadow-lg shadow-cyan-900/40 hover:bg-white"}`}
             >
               {hasVoted ? (
                 <>
@@ -192,7 +182,6 @@ export default function MatchCard({ match, hasVoted }: MatchCardProps) {
             </button>
           </Link>
         ) : isFinished ? (
-          // ESTADO 2: Votación Cerrada en Partido Terminado (Ver Calificaciones)
           <Link href={`/matches/${match.id}/results`} className="block w-full">
             <button className="w-full py-3 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center justify-center gap-2">
               <ClipboardCheck size={16} />
@@ -200,7 +189,6 @@ export default function MatchCard({ match, hasVoted }: MatchCardProps) {
             </button>
           </Link>
         ) : (
-          // ESTADO 3: Votación Cerrada en Partido no Terminado (Inactivo)
           <div className="text-center py-3 bg-slate-800/20 border border-slate-700/30 rounded-lg">
             <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
               Votación no disponible
