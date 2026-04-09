@@ -151,7 +151,12 @@ export async function getTeamRoster(teamId: number) {
         teamName: teams.name,
         teamLogo: teams.logoUrl,
         teamId: players.teamId,
-        globalAverage: sql<number>`COALESCE(AVG(CAST(${votes.score} AS DECIMAL)), 0)`,
+        globalAverage: sql<number>`
+  COALESCE(
+    SUM(CAST(${votes.score} AS DECIMAL) * CAST(${votes.appliedWeight} AS DECIMAL)) / 
+    NULLIF(SUM(CAST(${votes.appliedWeight} AS DECIMAL)), 0), 
+    0
+  )`,
       })
       .from(players)
       .leftJoin(teams, eq(players.teamId, teams.id))
@@ -255,8 +260,11 @@ export async function getPlayerDetailedProfile(playerId: number) {
         matchId: matches.id,
         matchDate: matches.matchDate,
         tournament: matches.tournamentName,
-        // Calculamos el promedio de todos los votos que recibió este jugador en este partido
-        playerScore: sql<number>`AVG(CAST(${votes.score} AS DECIMAL))`,
+        // CAMBIO: Promedio ponderado por partido
+        playerScore: sql<number>`
+      SUM(CAST(${votes.score} AS DECIMAL) * CAST(${votes.appliedWeight} AS DECIMAL)) / 
+      SUM(CAST(${votes.appliedWeight} AS DECIMAL))
+    `,
         scoreA: matches.scoreA,
         scoreB: matches.scoreB,
         teamAName: sql<string>`(SELECT name FROM teams WHERE id = ${matches.teamAId})`,
@@ -267,29 +275,34 @@ export async function getPlayerDetailedProfile(playerId: number) {
       .where(
         and(
           eq(votes.playerId, playerId),
-          eq(matches.tournamentName, activeTournament)
-        )
+          eq(matches.tournamentName, activeTournament),
+        ),
       )
-      // Agrupamos por partido para que no se repitan las filas
-      .groupBy(matches.id) 
+      .groupBy(matches.id)
       .orderBy(desc(matches.matchDate));
 
-    // 3. Promedio global de toda la temporada
+    // 3. Promedio global de toda la temporada PONDERADO
     const avgResult = await db
-      .select({ avg: sql<number>`AVG(CAST(${votes.score} AS DECIMAL))` })
+      .select({
+        weightedAvg: sql<number>`
+      SUM(CAST(${votes.score} AS DECIMAL) * CAST(${votes.appliedWeight} AS DECIMAL)) / 
+      SUM(CAST(${votes.appliedWeight} AS DECIMAL))
+    `,
+      })
       .from(votes)
       .where(eq(votes.playerId, playerId));
 
     return {
       ...playerInfo,
       team: { name: playerInfo.teamName, logoUrl: playerInfo.teamLogo },
-      history: history.map(h => ({
+      history: history.map((h) => ({
         ...h,
-        playerScore: Number(h.playerScore).toFixed(1), // Formateamos a un decimal
+        playerScore: Number(h.playerScore).toFixed(1),
         teamA: h.teamAName,
         teamB: h.teamBName,
       })),
-      globalAverage: Number(avgResult[0]?.avg || 0).toFixed(1)
+      // USAMOS weightedAvg aquí
+      globalAverage: Number(avgResult[0]?.weightedAvg || 0).toFixed(1),
     };
   } catch (error) {
     console.error("Error al obtener perfil de jugador:", error);

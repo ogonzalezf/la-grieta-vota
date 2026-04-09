@@ -85,32 +85,6 @@ export default function MethodologyPage() {
           </p>
         </div>
       </section>
-
-      {/* Pilares de Seguridad */}
-      <section className="grid gap-8 md:grid-cols-3">
-        <div className="space-y-4 text-center">
-          <div className="mx-auto size-12 bg-slate-800 rounded-xl flex items-center justify-center">
-            <ShieldCheck className="text-lol-cyan" />
-          </div>
-          <h4 className="font-bold uppercase text-sm">Anti-Spam</h4>
-          <p className="text-xs text-slate-500">
-            Usamos tecnología de huella digital (Fingerprint) para asegurar que
-            cada dispositivo vote solo una vez por partido, incluso sin cuenta.
-          </p>
-        </div>
-
-        <div className="space-y-4 text-center">
-          <div className="mx-auto size-12 bg-slate-800 rounded-xl flex items-center justify-center">
-            <Zap className="text-lol-cyan" />
-          </div>
-          <h4 className="font-bold uppercase text-sm">Voto en Caliente</h4>
-          <p className="text-xs text-slate-500">
-            Las urnas se abren inmediatamente al finalizar el Nexo y se cierran
-            tras 24 horas para capturar la emoción y el análisis fresco.
-          </p>
-        </div>       
-      </section>
-
       {/* Call to action */}
       <section className="p-10 rounded-3xl bg-linear-to-r from-lol-cyan/20 to-transparent border border-lol-cyan/20 text-center">
         <h3 className="text-2xl font-black mb-2">¿ERES UN PROFESIONAL?</h3>
