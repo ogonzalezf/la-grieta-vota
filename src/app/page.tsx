@@ -141,7 +141,7 @@ export default async function Home() {
                 <h3 className="text-xl font-black uppercase tracking-widest text-white italic">
                   Feed{" "}
                   <span className="text-slate-500 font-medium not-italic ml-2">
-                    Paridos
+                    Próximos Eventos
                   </span>
                 </h3>
               </div>
