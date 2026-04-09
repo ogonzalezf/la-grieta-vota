@@ -6,6 +6,7 @@ import Providers from "@/components/Providers";
 import Sidebar from "@/components/Sidebar";
 import AuthStatus from "@/components/AuthStatus";
 import GlobalSearch from "@/components/GlobalSearch";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -72,6 +73,7 @@ export default async function RootLayout({
               <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#0b1120]">
                 <div className="w-full h-full p-4 md:p-8 lg:p-10">
                   {children}
+                  <Analytics />
                 </div>
               </main>
             </div>
