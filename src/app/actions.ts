@@ -147,7 +147,7 @@ export async function getTeamRoster(teamId: number) {
         playerId: players.id,
         playerName: players.nickname,
         playerImage: players.imageUrl,
-        playerPosition: players.position, // ej: "TOP", "JUNGLE", etc.
+        playerPosition: players.position,
         teamName: teams.name,
         teamLogo: teams.logoUrl,
         teamId: players.teamId,
@@ -159,30 +159,28 @@ export async function getTeamRoster(teamId: number) {
       .where(eq(players.teamId, teamId))
       .groupBy(players.id, teams.name, teams.logoUrl);
 
-    // Definimos el orden de las posiciones de League of Legends
     const positionOrder: Record<string, number> = {
       TOP: 0,
       JUNGLE: 1,
       MID: 2,
       ADC: 3,
       SUPPORT: 4,
-      SUP: 4, // Fallback por si acaso
+      SUP: 4,
     };
 
-    // Ordenamos el roster antes de devolverlo
     return roster
       .map((p) => ({
         ...p,
+        // CORRECCIÓN: Aseguramos que teamName no sea null para cumplir con la interfaz
+        teamName: p.teamName ?? "Equipo Desconocido",
+        teamId: p.teamId ?? 0,
         globalAverage: Number(p.globalAverage),
       }))
       .sort((a, b) => {
         const posA = a.playerPosition?.toUpperCase() || "";
         const posB = b.playerPosition?.toUpperCase() || "";
-
-        // Si la posición no existe en el mapa, la mandamos al final
         const orderA = positionOrder[posA] ?? 99;
         const orderB = positionOrder[posB] ?? 99;
-
         return orderA - orderB;
       });
   } catch (error) {
