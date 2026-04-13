@@ -32,7 +32,7 @@ export default function TopPlayers({ players, hideHeader=false, hideRank=false}:
         </div>
       )}
 
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         {players.map((player, index) => {
           // MODIFICACIÓN: Definimos la clase de color dinámicamente
           const isLowScore = player.globalAverage < 5;
@@ -41,67 +41,66 @@ export default function TopPlayers({ players, hideHeader=false, hideRank=false}:
           return (
             <div
               key={player.playerId}
-              className="glass-card group flex items-center gap-4 p-3 pr-6 border-slate-800/50 hover:border-lol-cyan/30 transition-all relative overflow-hidden"
+              className="glass-card group flex items-center gap-3 p-3 pr-4 border-slate-800/50 hover:border-lol-cyan/30 transition-all relative overflow-hidden"
             >
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-lol-cyan/20 group-hover:bg-lol-cyan transition-colors" />
 
               {!hideRank && (
-                <span className="text-2xl font-black italic text-slate-800 ml-2 w-6 shrink-0">
+                <span className="text-xl font-black italic text-slate-800 ml-1 w-5 shrink-0">
                   {index + 1}
                 </span>
               )}
-
-              <div className="relative size-12 rounded-lg overflow-hidden bg-slate-900 border border-slate-800 shrink-0">
+              <div className="relative size-11 rounded-lg overflow-hidden bg-slate-900 border border-slate-800 shrink-0">
                 <Image
                   src={player.playerImage || "/placeholder.png"}
                   alt={player.playerName}
                   fill
                   className="object-cover object-top"
-                  sizes="48px"
+                  sizes="44px"
                   loading="eager"
                 />
               </div>
 
               {/* Contenedor central corregido para que el nombre no se corte */}
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-[8px] font-black bg-slate-800 text-lol-cyan px-1.5 py-0.5 rounded uppercase shrink-0">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 overflow-hidden">
+                  <span className="text-[7px] font-black bg-slate-800 text-lol-cyan px-1 py-0.5 rounded uppercase shrink-0">
                     {player.playerPosition}
                   </span>
-                  {/* Eliminado 'truncate' para mostrar el nombre completo */}
-                  <p className="font-black text-white uppercase italic text-sm whitespace-nowrap">
+                  {/* CAMBIO: Eliminado whitespace-nowrap y añadido truncate */}
+                  <p className="font-black text-white uppercase italic text-sm truncate tracking-tighter">
                     {player.playerName}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 mt-1">
-                  <div className="relative size-4 shrink-0">
+                <div className="flex items-center gap-2 mt-1 overflow-hidden">
+                  <div className="relative size-3.5 shrink-0">
                     <Image
                       src={player.teamLogo || "/placeholder.png"}
                       alt={player.teamName}
                       fill
                       className="object-contain opacity-60"
-                      sizes="16px"
+                      sizes="14px"
                     />
                   </div>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-tight">
+                  {/* CAMBIO: Añadido truncate al nombre del equipo */}
+                  <p className="text-[9px] font-bold text-slate-500 uppercase tracking-tight truncate">
                     {player.teamName}
                   </p>
                 </div>
               </div>
 
               {/* Sección de puntuación con color dinámico */}
-              <div className="text-right shrink-0">
-                {/* Aplicamos scoreColorClass al contenedor de TrendingUp y el número */}
+              <div className="text-right shrink-0 ml-1">
                 <div
-                  className={`flex items-center gap-1 justify-end ${scoreColorClass}`}
+                  className={`flex items-center gap-0.5 justify-end ${scoreColorClass}`}
                 >
-                  <TrendingUp size={12} />
-                  <span className="text-xl font-black italic leading-none">
+                  <TrendingUp size={11} className="shrink-0" />
+                  <span className="text-lg font-black italic leading-none">
                     {player.globalAverage.toFixed(1)}
                   </span>
                 </div>
-                <p className="text-[8px] font-black text-slate-600 uppercase mt-1 tracking-tighter">
-                  Puntaje Global
+                <p className="text-[7px] font-black text-slate-600 uppercase mt-0.5 tracking-tighter">
+                  Puntaje
                 </p>
               </div>
             </div>

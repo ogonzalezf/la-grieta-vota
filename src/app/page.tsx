@@ -135,19 +135,28 @@ export default async function Home() {
 
           {/* SECCIÓN FEED / JORNADA */}
           <section>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
-                <Sparkles className="text-lol-cyan" size={20} />
-                <h3 className="text-xl font-black uppercase tracking-widest text-white italic">
+                <Sparkles className="text-lol-cyan shrink-0" size={20} />
+                <h3 className="text-lg md:text-xl font-black uppercase tracking-widest text-white italic leading-tight">
                   Feed{" "}
-                  <span className="text-slate-500 font-medium not-italic ml-2">
+                  <span className="text-slate-500 font-medium not-italic block sm:inline sm:ml-2">
                     Próximos Eventos
                   </span>
                 </h3>
               </div>
-              <span className="text-[10px] font-black bg-slate-800 text-slate-400 px-3 py-1 rounded-full uppercase tracking-tighter">
-                {allMatches.length} Partidos
-              </span>
+
+              {/* CONTADOR RESPONSIVO CORREGIDO */}
+              <div className="bg-slate-900/80 border border-slate-800 px-3 py-1.5 md:px-4 md:py-2 rounded-2xl shrink-0 ml-4">
+                <div className="flex flex-col items-center justify-center leading-none">
+                  <span className="text-xs md:text-sm font-black text-white">
+                    {allMatches.length}
+                  </span>
+                  <span className="text-[8px] md:text-[9px] font-black text-slate-500 uppercase tracking-tighter">
+                    Partidos
+                  </span>
+                </div>
+              </div>
             </div>
 
             {otherMatches.length > 0 ? (

@@ -43,9 +43,8 @@ export default async function RootLayout({
             <Sidebar isAdmin={isAdmin} activeTournament={activeTournament} />
 
             {/* CONTENEDOR DE CONTENIDO */}
-            <div className="flex-1 flex flex-col min-w-0 h-full relative bg-[#0b1120]">
-              {/* HEADER: Buscador y Auth */}
-              <header className="h-20 flex items-center justify-between px-6 lg:px-10 border-b border-slate-800/60 bg-[#0b1120] sticky top-0 z-40">
+            <div className="flex-1 flex flex-col min-w-0 h-full relative">
+              <header className="h-20 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/60 bg-[#0b1120]/95 backdrop-blur-md sticky top-0 z-40">
                 <div className="flex items-center gap-6 flex-1">
                   {/* Espacio reservado para el buscador global */}
                   <div className="hidden md:block w-full max-w-sm">
@@ -58,8 +57,9 @@ export default async function RootLayout({
               </header>
 
               {/* ÁREA DE CONTENIDO DINÁMICO */}
-              <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#0b1120]">
-                <div className="w-full h-full p-4 md:p-8 lg:p-10">
+              <main className="flex-1 overflow-y-auto custom-scrollbar">
+                {/* Ajustamos el padding para tablets */}
+                <div className="max-w-[1600px] mx-auto p-4 md:p-6 xl:p-10">
                   {children}
                   <Analytics />
                 </div>

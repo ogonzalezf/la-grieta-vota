@@ -29,14 +29,13 @@ export default function Sidebar({ isAdmin, activeTournament }: SidebarProps) {
   const pathname = usePathname();
 
   const menuItems = [
-  { name: "Inicio", icon: Home, href: "/" },
-  { name: "Explorar Equipos", icon: Users, href: "/teams" },
-  { name: "Calendario", icon: Calendar, href: "/calendar" },
-  { name: "Historial", icon: History, href: "/history" },
-  { name: "Metodología", icon: Info, href: "/about" },
-  { name: "Solicitar Rango", icon: ShieldCheck, href: "/verify" },
-];
-
+    { name: "Inicio", icon: Home, href: "/" },
+    { name: "Explorar Equipos", icon: Users, href: "/teams" },
+    { name: "Calendario", icon: Calendar, href: "/calendar" },
+    { name: "Historial", icon: History, href: "/history" },
+    { name: "Metodología", icon: Info, href: "/about" },
+    { name: "Solicitar Rango", icon: ShieldCheck, href: "/verify" },
+  ];
 
   // Cerrar sidebar al cambiar de ruta en móvil
   useEffect(() => {
@@ -55,23 +54,29 @@ export default function Sidebar({ isAdmin, activeTournament }: SidebarProps) {
 
       {/* SIDEBAR CONTAINER */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-[#0b1120] border-r border-slate-800/60 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 bg-[#0b1120] border-r border-slate-800/60 transform transition-all duration-300 ease-in-out 
+          lg:relative lg:translate-x-0 
+          ${isOpen ? "translate-x-0 w-72" : "-translate-x-full lg:translate-x-0 w-20 xl:w-72"} 
+        `}
       >
-        <div className="flex flex-col h-full py-6">
-          {/* SECCIÓN SUPERIOR: Logo Centrado */}
-          <div className="px-8 pb-6 flex justify-center">
-            <Link
-              href="/"
-              onClick={() => setIsOpen(false)}
-              className="block group"
-            >
-              <div className="relative h-16 w-48">
-                {" "}
-                {/* Ancho fijo y fill para centrado perfecto */}
+        <div className="flex flex-col h-full py-6 overflow-hidden">
+          {/* LOGO: Versión compacta para iPad, versión completa para Desktop */}
+          <div className="px-4 pb-6 flex justify-center">
+            <Link href="/" className="block group relative">
+              {/* Logo reducido (Icono) para iPad */}
+              <div className="relative h-12 w-12 xl:hidden">
                 <Image
-                  src="/logo.png" // Ruta relativa dentro de /public
+                  src="/logo.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                  sizes="48px"
+                />
+              </div>
+              {/* Logo completo para Desktop */}
+              <div className="relative h-16 w-48 hidden xl:block">
+                <Image
+                  src="/logo.png"
                   alt="La Grieta Vota"
                   fill
                   priority
@@ -91,14 +96,16 @@ export default function Sidebar({ isAdmin, activeTournament }: SidebarProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all ${
+                  className={`flex items-center justify-center xl:justify-start gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all ${
                     isActive
-                      ? "bg-lol-cyan/10 text-lol-cyan shadow-[inset_0_0_20px_rgba(8,145,178,0.1)] border border-lol-cyan/20"
+                      ? "bg-lol-cyan/10 text-lol-cyan border border-lol-cyan/20"
                       : "text-slate-400 hover:text-white hover:bg-slate-800/40"
                   }`}
+                  title={item.name}
                 >
-                  <LucideIcon size={20} />
-                  {item.name}
+                  <LucideIcon size={20} className="shrink-0" />
+                  {/* TEXTO: Oculto en iPad Pro (1024px), visible en pantallas extra grandes */}
+                  <span className="hidden xl:block truncate">{item.name}</span>
                 </Link>
               );
             })}
@@ -106,29 +113,30 @@ export default function Sidebar({ isAdmin, activeTournament }: SidebarProps) {
             {/* SECCIÓN ADMIN */}
             {isAdmin && (
               <div className="pt-6 mt-6 border-t border-slate-800/40">
-                <p className="px-4 mb-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                  Administración
+                <p className="px-4 mb-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] hidden xl:block">
+                  Admin
                 </p>
                 <Link
                   href="/admin"
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all ${
+                  className={`flex items-center justify-center xl:justify-start gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all ${
                     pathname.startsWith("/admin")
                       ? "bg-amber-500/10 text-amber-500 border border-amber-500/20"
                       : "text-slate-400 hover:text-white hover:bg-slate-800/40"
                   }`}
+                  title="Panel Admin"
                 >
-                  <ShieldCheck size={20} />
-                  Panel Admin
+                  <ShieldCheck size={20} className="shrink-0" />
+                  <span className="hidden xl:block">Panel Admin</span>
                 </Link>
               </div>
             )}
           </nav>
 
           {/* FOOTER SIDEBAR */}
-          <div className="p-6 mt-auto border-t border-slate-800/40 bg-slate-900/20">
+          <div className="p-6 mt-auto border-t border-slate-800/40 bg-slate-900/20 flex justify-center xl:justify-start">
             <div className="flex items-center gap-3 px-2">
-              <div className="size-2 rounded-full bg-lol-cyan animate-pulse" />
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+              <div className="size-2 rounded-full bg-lol-cyan animate-pulse shrink-0" />
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest hidden xl:block">
                 {activeTournament}
               </span>
             </div>
