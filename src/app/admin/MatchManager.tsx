@@ -105,26 +105,30 @@ export default function MatchManager({
         </div>
 
         {/* PESTAÑAS DE ESTADO */}
-        <div className="flex border-b border-slate-800/60 mb-6 overflow-x-auto">
-          {[
-            { id: "ALL", label: "Todos", icon: Trophy },
-            { id: "LIVE", label: "En Vivo", icon: Power },
-            { id: "UPCOMING", label: "Próximos", icon: Calendar },
-            { id: "FINISHED", label: "Finalizados", icon: CheckCircle2 },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-6 py-3 text-xs font-black uppercase tracking-widest transition-all border-b-2 ${
-                activeTab === tab.id
-                  ? "border-lol-cyan text-lol-cyan bg-lol-cyan/5"
-                  : "border-transparent text-slate-500 hover:text-slate-300"
-              }`}
-            >
-              <tab.icon size={14} />
-              {tab.label}
-            </button>
-          ))}
+        <div className="flex border-b border-slate-800/60 mb-6 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+          <div className="flex min-w-max">
+            {" "}
+            {/* min-w-max para evitar que se aplasten en móvil */}
+            {[
+              { id: "ALL", label: "Todos", icon: Trophy },
+              { id: "LIVE", label: "En Vivo", icon: Power },
+              { id: "UPCOMING", label: "Próximos", icon: Calendar },
+              { id: "FINISHED", label: "Finalizados", icon: CheckCircle2 },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-2 px-5 py-4 text-[10px] md:text-xs font-black uppercase tracking-widest transition-all border-b-2 whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "border-lol-cyan text-lol-cyan bg-lol-cyan/5"
+                    : "border-transparent text-slate-500 hover:text-slate-300"
+                }`}
+              >
+                <tab.icon size={14} className="shrink-0" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* LISTADO CON SCROLL INTERNO */}
