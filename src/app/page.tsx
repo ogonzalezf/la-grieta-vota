@@ -93,7 +93,7 @@ export default async function Home() {
       <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-cyan-900/20 to-transparent p-8 border border-cyan-500/10">
         <div className="relative z-10 max-w-2xl">
           <h2 className="text-4xl lg:text-5xl font-black mb-5 leading-tight tracking-tight text-white uppercase italic">
-            El Veredicto de <span className="text-lol-cyan">La Grieta</span>
+            La Grieta <span className="text-lol-cyan">Vota</span>
           </h2>
           <p className="text-slate-400 text-base md:text-lg lg:text-xl max-w-5xl leading-relaxed">
             Puntúa el desempeño de los profesionales. Un sistema donde la voz de
