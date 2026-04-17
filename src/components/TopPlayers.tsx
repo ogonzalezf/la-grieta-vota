@@ -75,17 +75,17 @@ export default function TopPlayers({
               </div>
 
               {/* Contenedor central corregido para que el nombre no se corte */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5 overflow-hidden">
-                  <span className="text-[7px] font-black bg-slate-800 text-lol-cyan px-1 py-0.5 rounded uppercase shrink-0">
+              <div className="flex-1 min-w-0 flex flex-col justify-center">
+                <div className="flex items-center gap-2">
+                  <span className="text-[8px] font-black bg-slate-800 text-lol-cyan px-1.5 py-0.5 rounded uppercase shrink-0">
                     {player.playerPosition}
                   </span>
-                  {/* CAMBIO: Eliminado whitespace-nowrap y añadido truncate */}
-                  <p className="font-black text-white uppercase italic text-sm truncate max-w-[120px] sm:max-w-none">
+                  {/* Eliminamos el max-w-[120px] que limitaba el ancho */}
+                  <p className="font-black text-white uppercase italic text-sm md:text-base truncate tracking-tight leading-tight w-full">
                     {player.playerName}
                     {isInactive && (
-                      <span className="text-[8px] not-italic ml-2 text-slate-500">
-                        (BANCA)
+                      <span className="text-[9px] not-italic ml-2 text-slate-500 font-bold">
+                        (Banca o Exjugador)
                       </span>
                     )}
                   </p>
