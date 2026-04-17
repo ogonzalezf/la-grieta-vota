@@ -9,7 +9,7 @@ interface TopPlayerItem {
   teamName: string;
   teamLogo: string | null;
   globalAverage: number;
-  isActive: boolean;
+  isActive?: boolean | null;
 }
 
 interface TopPlayersProps {

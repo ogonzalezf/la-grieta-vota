@@ -155,6 +155,7 @@ export async function getTopPlayers() {
         teamName: teams.name,
         teamLogo: teams.logoUrl,
         globalAverage: globalAverageExpr,
+        isActive: players.isActive,
       })
       .from(votes)
       .innerJoin(players, eq(votes.playerId, players.id))

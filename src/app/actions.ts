@@ -181,6 +181,7 @@ export async function getTeamRoster(teamId: number) {
         teamName: p.teamName ?? "Equipo Desconocido",
         teamId: p.teamId ?? 0,
         globalAverage: Number(p.globalAverage),
+        isActive: p.isActive ?? true,
       }))
       .sort((a, b) => {
         if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
