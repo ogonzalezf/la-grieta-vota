@@ -9,6 +9,7 @@ interface TopPlayerItem {
   teamName: string;
   teamLogo: string | null;
   globalAverage: number;
+  isActive: boolean;
 }
 
 interface TopPlayersProps {
@@ -17,7 +18,11 @@ interface TopPlayersProps {
   hideRank?: boolean;
 }
 
-export default function TopPlayers({ players, hideHeader=false, hideRank=false}: TopPlayersProps) {
+export default function TopPlayers({
+  players,
+  hideHeader = false,
+  hideRank = false,
+}: TopPlayersProps) {
   return (
     <section className="space-y-6">
       {!hideHeader && (
@@ -35,15 +40,24 @@ export default function TopPlayers({ players, hideHeader=false, hideRank=false}:
       <div className="grid gap-3">
         {players.map((player, index) => {
           // MODIFICACIÓN: Definimos la clase de color dinámicamente
+          const isInactive = !player.isActive; // Detectamos si es de la banca
           const isLowScore = player.globalAverage < 5;
           const scoreColorClass = isLowScore ? "text-red-500" : "text-lol-cyan";
 
           return (
             <div
               key={player.playerId}
-              className="glass-card group flex items-center gap-3 p-3 pr-4 border-slate-800/50 hover:border-lol-cyan/30 transition-all relative overflow-hidden"
+              className={`glass-card group flex items-center gap-3 p-3 pr-4 border-slate-800/50 transition-all relative overflow-hidden ${
+                isInactive ? "opacity-60 grayscale-[0.5]" : "" // Estilo banca
+              }`}
             >
-              <div className="absolute left-0 top-0 bottom-0 w-1 bg-lol-cyan/20 group-hover:bg-lol-cyan transition-colors" />
+              <div
+                className={`absolute left-0 top-0 bottom-0 w-1 ${
+                  isInactive
+                    ? "bg-slate-700"
+                    : "bg-lol-cyan/20 group-hover:bg-lol-cyan"
+                }`}
+              />
 
               {!hideRank && (
                 <span className="text-xl font-black italic text-slate-800 ml-1 w-5 shrink-0">
@@ -57,7 +71,6 @@ export default function TopPlayers({ players, hideHeader=false, hideRank=false}:
                   fill
                   className="object-cover object-top"
                   sizes="44px"
-                  loading="eager"
                 />
               </div>
 
@@ -68,8 +81,13 @@ export default function TopPlayers({ players, hideHeader=false, hideRank=false}:
                     {player.playerPosition}
                   </span>
                   {/* CAMBIO: Eliminado whitespace-nowrap y añadido truncate */}
-                  <p className="font-black text-white uppercase italic text-sm truncate tracking-tighter">
+                  <p className="font-black text-white uppercase italic text-sm truncate max-w-[120px] sm:max-w-none">
                     {player.playerName}
+                    {isInactive && (
+                      <span className="text-[8px] not-italic ml-2 text-slate-500">
+                        (BANCA)
+                      </span>
+                    )}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 mt-1 overflow-hidden">

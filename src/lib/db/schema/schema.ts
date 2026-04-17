@@ -80,6 +80,7 @@ export const players = pgTable("players", {
     onDelete: "set null",
   }),
   imageUrl: text("logo_url"),
+  isActive: boolean("is_active").default(true),
 });
 
 export const matches = pgTable("matches", {

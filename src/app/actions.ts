@@ -148,6 +148,7 @@ export async function getTeamRoster(teamId: number) {
         playerName: players.nickname,
         playerImage: players.imageUrl,
         playerPosition: players.position,
+        isActive: players.isActive,
         teamName: teams.name,
         teamLogo: teams.logoUrl,
         teamId: players.teamId,
@@ -182,10 +183,12 @@ export async function getTeamRoster(teamId: number) {
         globalAverage: Number(p.globalAverage),
       }))
       .sort((a, b) => {
-        const posA = a.playerPosition?.toUpperCase() || "";
-        const posB = b.playerPosition?.toUpperCase() || "";
-        const orderA = positionOrder[posA] ?? 99;
-        const orderB = positionOrder[posB] ?? 99;
+        if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
+
+        const orderA =
+          positionOrder[a.playerPosition?.toUpperCase() || ""] ?? 99;
+        const orderB =
+          positionOrder[b.playerPosition?.toUpperCase() || ""] ?? 99;
         return orderA - orderB;
       });
   } catch (error) {
